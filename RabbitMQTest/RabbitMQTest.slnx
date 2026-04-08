@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="RabbitMQTest/RabbitMQTest.csproj" />
+  <Project Path="RMQHelperDLL/RMQHelperDLL.csproj" Id="ebe3458c-5776-4739-85b7-e0601cf99457" />
+</Solution>
