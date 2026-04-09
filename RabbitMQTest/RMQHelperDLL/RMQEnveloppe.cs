@@ -126,7 +126,7 @@ namespace RMQHelperDLL
                 {
                     IncludeFields = true,
                 };
-                message1 = System.Text.Json.JsonSerializer.Deserialize<RMQEnveloppe>(json,options);
+                message1 = JsonSerializer.Deserialize<RMQEnveloppe>(json,options);
 
             }
             catch (Exception ex) {

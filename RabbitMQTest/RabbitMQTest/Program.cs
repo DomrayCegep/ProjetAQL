@@ -13,7 +13,7 @@
             // Configuration par défaut
             string currentQueueName = "hello"; // Nom de la file d'attente pour recevoir les messages
             string distantQueueName = "hello2"; // Nom de la file à qui on envoie les messages
-            string adressServer = "172.16.80.27:5672"; // Adresse du serveur RabbitMQ (port par défaut 5672)
+            string adressServer = "192.168.92.129:5672"; // Adresse du serveur RabbitMQ (port par défaut 5672)
 
             string? line;
 

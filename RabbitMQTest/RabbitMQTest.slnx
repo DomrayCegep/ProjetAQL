@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="MQTestBench2/MQTestBench2.csproj" Id="21144ac5-dacf-4266-990a-9e3ab1bc2688" />
   <Project Path="RabbitMQTest/RabbitMQTest.csproj" />
   <Project Path="RMQHelperDLL/RMQHelperDLL.csproj" Id="ebe3458c-5776-4739-85b7-e0601cf99457" />
 </Solution>
