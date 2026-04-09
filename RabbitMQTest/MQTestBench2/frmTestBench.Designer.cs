@@ -77,6 +77,7 @@
             txtFileReception.Size = new Size(361, 27);
             txtFileReception.TabIndex = 3;
             txtFileReception.Text = "Client";
+            txtFileReception.TextChanged += txtFileReception_TextChanged;
             // 
             // label2
             // 
@@ -95,6 +96,7 @@
             btnConnecter.TabIndex = 4;
             btnConnecter.Text = "Connecter";
             btnConnecter.UseVisualStyleBackColor = true;
+            btnConnecter.Click += btnConnecter_Click;
             // 
             // splitContainer1
             // 
@@ -119,7 +121,7 @@
             // 
             splitContainer1.Panel2.Controls.Add(txtReceive);
             splitContainer1.Panel2.Controls.Add(label4);
-            splitContainer1.Size = new Size(1122, 535);
+            splitContainer1.Size = new Size(1123, 535);
             splitContainer1.SplitterDistance = 602;
             splitContainer1.TabIndex = 5;
             // 
@@ -172,6 +174,7 @@
             btnEnvoyer.TabIndex = 6;
             btnEnvoyer.Text = "Envoyer";
             btnEnvoyer.UseVisualStyleBackColor = true;
+            btnEnvoyer.Click += btnEnvoyer_Click;
             // 
             // txtNomMessage
             // 
@@ -225,7 +228,7 @@
             txtReceive.Location = new Point(11, 50);
             txtReceive.Multiline = true;
             txtReceive.Name = "txtReceive";
-            txtReceive.Size = new Size(495, 467);
+            txtReceive.Size = new Size(496, 467);
             txtReceive.TabIndex = 2;
             // 
             // label4
@@ -242,7 +245,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1122, 656);
+            ClientSize = new Size(1123, 656);
             Controls.Add(splitContainer1);
             Controls.Add(btnConnecter);
             Controls.Add(txtFileReception);

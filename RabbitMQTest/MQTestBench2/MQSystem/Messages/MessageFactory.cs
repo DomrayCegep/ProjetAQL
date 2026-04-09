@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MQTestBench2.MQSystem.Messages;
+using RMQHelperDLL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -10,6 +12,7 @@ namespace MQTestBench.MQSystem.Messages
     internal class MessageFactory
     {
         List<IMessageActions> _messageInstances;
+        IMessageActions _defaultMessage;
 
         public MessageFactory()
         {
@@ -22,6 +25,7 @@ namespace MQTestBench.MQSystem.Messages
             var implementations = types.Where(t => interfaceType.IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract).ToList();
 
             _messageInstances = new List<IMessageActions>();
+            _defaultMessage = new MsgUnknown(); // Par exemple, une instance par défaut
 
             foreach (var impl in implementations)
             {
@@ -33,6 +37,20 @@ namespace MQTestBench.MQSystem.Messages
                 }
                 catch { }
             }
+        }
+
+        public IMessageActions GetMessageInstance(RMQEnveloppe msgEnveloppe)
+        {
+            var msg = _messageInstances.FirstOrDefault(m => m.MessageName == msgEnveloppe.MessageName);
+            if (msg == null)
+            {
+                return _defaultMessage.GetMessageInstance(msgEnveloppe);
+            }
+            else
+            {
+                return msg.GetMessageInstance(msgEnveloppe);
+            }
+
         }
     }
 }
