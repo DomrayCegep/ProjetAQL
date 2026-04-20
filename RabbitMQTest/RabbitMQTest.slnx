@@ -1,4 +1,6 @@
 <Solution>
+  <Project Path="ClientAppTest/ClientAppTest.csproj" Id="45d88f50-0226-434f-881d-77dfa308bb47" />
+  <Project Path="LogsEtConfig/LogsEtConfig.csproj" Id="ef0d9c57-2a16-4bc6-acf1-fb0822854271" />
   <Project Path="MQDemo/MQDemo.csproj" Id="16fb637c-2f00-4a3d-b495-b3b351664610" />
   <Project Path="MQTestBench2/MQTestBench2.csproj" Id="21144ac5-dacf-4266-990a-9e3ab1bc2688" />
   <Project Path="RabbitMQTest/RabbitMQTest.csproj" />
