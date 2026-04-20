@@ -32,7 +32,7 @@ namespace LogsEtConfig.Logs.Implementations
                     break;
             }
 
-            const string separator = "*****************************************";
+            const string separator = "**********************************************************************";
 
             Console.WriteLine(); 
             Console.WriteLine(separator);

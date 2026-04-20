@@ -22,7 +22,7 @@ namespace LogsEtConfig.Logs
 
         public string GetFullContext()
         {
-            if (DetailContext == string.Empty)
+            if (DetailContext != string.Empty)
                 return $"{MainContext}.{DetailContext}";
             else 
                 return MainContext;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LogsEtConfig.Logs.Implementations
 {
-    internal class FileLogger : ILog, IDisposable
+    public class FileLogger : ILog, IDisposable
     {
         private string? _basePath;
         private string? _baseFileName;
@@ -47,6 +47,7 @@ namespace LogsEtConfig.Logs.Implementations
 
             //is file already in use by another process ?
             _outputFile = new StreamWriter(fullPath, append: true);
+            _isInitialized = true;
 
         }
 
@@ -66,7 +67,7 @@ namespace LogsEtConfig.Logs.Implementations
             if (!_isInitialized)
                 throw new InvalidOperationException("FileLogger is not initialized. Please call Initialize() before logging.");
 
-            const string separator = "*****************************************";
+            const string separator = "**********************************************************************";
 
             _outputFile.WriteLine();
             _outputFile.WriteLine(separator);
@@ -82,6 +83,7 @@ namespace LogsEtConfig.Logs.Implementations
             _outputFile.WriteLine(separator);
 
             _outputFile.WriteLine();
+            _outputFile.Flush();
         }
 
         public void LogCritical(string message)
@@ -120,6 +122,7 @@ namespace LogsEtConfig.Logs.Implementations
                 throw new InvalidOperationException("FileLogger is not initialized. Please call Initialize() before logging.");
 
             _outputFile.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} [{token}] {message}");
+            _outputFile.Flush();
         }
 
         public void Dispose()

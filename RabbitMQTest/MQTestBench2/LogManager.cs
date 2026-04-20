@@ -30,12 +30,6 @@ namespace LogsEtConfig.Logs
             }
         }
 
-        public LogContext GetLoggerWithContext(string mainContext)
-        {
-            LogContext ctx = new LogContext(mainContext, this);
-            return ctx;
-        }
-
         #region Redirection vers les loggers inscrits
 
         public void LogCritical(string message)
