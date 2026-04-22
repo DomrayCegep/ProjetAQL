@@ -25,7 +25,7 @@ namespace MQTestBench.MQSystem
             _msgFactory = new MessageFactory();
         }
 
-        public event EventHandler<IMessageActions> MessageReceived;
+        public event EventHandler<RMQEnveloppe> MessageReceived;
 
         public string QueueName { get; private set; }
         public string ServerAddress { get; private set; }
@@ -42,23 +42,44 @@ namespace MQTestBench.MQSystem
             await _mq.CurrentChannel.BasicConsumeAsync(QueueName, autoAck: true, consumer: _consumer);
         }
 
-        public async Task SendMessage(string destination, string messageName, string? messageText, DataSet? messageData)
+        public async Task Deconnect()
+        {
+
+            if (_consumer != null)
+            {
+                _consumer.ReceivedAsync -= OnMessageReceived;
+                _consumer = null;
+            }
+
+            if (_mq != null)
+            {
+                await _mq.Disconnect();
+                _mq = null;
+            }
+
+
+        }
+
+
+        public async Task<RMQEnveloppe> SendMessage(string destination, string messageName, string? messageText, DataSet? messageData)
         { 
             if (_mq == null)
                 throw new InvalidOperationException("Se connecter avant de pouvoir envoyer des messages");
 
-            await _mq.SendAsyncWithData(destination, messageName, messageText ?? string.Empty, messageData ?? new DataSet());
+            return await _mq.SendAsyncWithData(destination, messageName, messageText ?? string.Empty, messageData ?? new DataSet());
         }
 
         private async Task OnMessageReceived(object sender, BasicDeliverEventArgs ea)
         { 
             var body = ea.Body.ToArray();
             RMQEnveloppe message = RMQEnveloppe.Deserialise(body);
-            IMessageActions msgInstance = _msgFactory.GetMessageInstance(message);
-            MsgReceived(msgInstance);
+            //IMessageActions msgInstance = _msgFactory.GetMessageInstance(message);
+            //MsgReceived(msgInstance);
+
+            MsgReceived(message);
         }
 
-        private void MsgReceived(IMessageActions msg)
+        private void MsgReceived(RMQEnveloppe msg)
         { 
             MessageReceived?.Invoke(this, msg);
         }

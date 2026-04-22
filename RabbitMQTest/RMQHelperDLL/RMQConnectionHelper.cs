@@ -37,6 +37,15 @@ namespace RMQHelperDLL
             CurrentChannel = await ConnectOnRabbitMQ(CurrentUri, CurrentQueueName);
         }
 
+        public async Task Disconnect()
+        {
+            if (CurrentChannel != null)
+            {
+                await CurrentChannel.CloseAsync();
+                CurrentChannel.Dispose();
+            }
+        }
+
         /// <summary>
         /// Asynchronously establishes a connection to a RabbitMQ server and creates a channel for communication with
         /// the specified queue.
@@ -72,7 +81,7 @@ namespace RMQHelperDLL
         /// <param name="message">The message payload to send. This value must not be null or empty.</param>
         /// <returns>A task that represents the asynchronous send operation. The task completes when the message has been
         /// published to the queue.</returns>
-        public async Task SendAsync(string queueName, string messageTitle,  string message)
+        public async Task<RMQEnveloppe> SendAsync(string queueName, string messageTitle,  string message)
         {
 
             var msg = new RMQEnveloppe(messageName: messageTitle, sender: CurrentChannel.CurrentQueue, messageText: message, string.Empty);
@@ -87,6 +96,7 @@ namespace RMQHelperDLL
 
             await CurrentChannel.BasicPublishAsync(exchange: string.Empty, routingKey: queueName, mandatory: false, basicProperties: properties, body: msg.Serialise(), new CancellationToken());
 
+            return msg;
         }
 
         /// <summary>
@@ -100,8 +110,9 @@ namespace RMQHelperDLL
         /// <param name="messageTitle">Message name use to help deserialisation and interpretation</param>
         /// <param name="message">The text content of the message to send. Cannot be null or empty.</param>
         /// <param name="ds">A DataSet containing additional data to include with the message. Can be null if no extra data is required.</param>
-        /// <returns>A task that represents the asynchronous send operation.</returns>
-        public async Task SendAsyncWithData(string queueName, string messageTitle, string message, DataSet ds)
+        /// <returns>A task that represents the asynchronous send operation. The task completes when the message has been
+        /// published to the queue.</returns>
+        public async Task<RMQEnveloppe> SendAsyncWithData(string queueName, string messageTitle, string message, DataSet ds)
         {
 
             var msg = new RMQEnveloppe(messageName: messageTitle, sender: CurrentChannel.CurrentQueue, messageText: message, string.Empty);
@@ -118,6 +129,7 @@ namespace RMQHelperDLL
 
             await CurrentChannel.BasicPublishAsync(exchange: string.Empty, routingKey: queueName, mandatory: false, basicProperties: properties, body: msg.Serialise(), new CancellationToken());
 
+            return msg;
         }
     }
 }
