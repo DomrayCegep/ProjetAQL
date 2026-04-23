@@ -341,6 +341,7 @@
             dgvHistoryMsg.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvHistoryMsg.Size = new Size(500, 161);
             dgvHistoryMsg.TabIndex = 1;
+            dgvHistoryMsg.CellContentClick += dgvHistoryMsg_CellContentClick;
             dgvHistoryMsg.CellFormatting += dgvHistoryMsg_CellFormatting;
             dgvHistoryMsg.SelectionChanged += dgvHistoryMsg_SelectionChanged;
             // 

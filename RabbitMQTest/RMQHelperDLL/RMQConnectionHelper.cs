@@ -11,7 +11,7 @@ namespace RMQHelperDLL
     /// connecting to a RabbitMQ server and publishing messages. All methods are asynchronous and intended for use in
     /// applications that require non-blocking messaging operations. The class is not intended to be
     /// instantiated.</remarks>
-    public class RMQConnectionHelper
+    internal class RMQConnectionHelper
     {
         public RMQConnectionHelper(string uri, string queueName) 
         {

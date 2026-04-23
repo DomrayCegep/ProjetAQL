@@ -1,28 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using RMQHelperDLL;
+﻿using RMQHelperDLL;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using MQTestBench.MQSystem.Messages;
 using System.Data;
 
 
-namespace MQTestBench.MQSystem
+namespace RMQHelperDLL
 {
-    internal class MQConnection
+    public class MQConnection
     {
         RMQConnectionHelper? _mq;
         AsyncEventingBasicConsumer? _consumer;
-        MessageFactory _msgFactory;
 
         public MQConnection(string queueName, string addressServer)
         {
             QueueName = queueName;
             ServerAddress = addressServer;
-            _msgFactory = new MessageFactory();
         }
 
         public event EventHandler<RMQEnveloppe> MessageReceived;
@@ -56,10 +48,7 @@ namespace MQTestBench.MQSystem
                 await _mq.Disconnect();
                 _mq = null;
             }
-
-
         }
-
 
         public async Task<RMQEnveloppe> SendMessage(string destination, string messageName, string? messageText, DataSet? messageData)
         { 
@@ -73,8 +62,6 @@ namespace MQTestBench.MQSystem
         { 
             var body = ea.Body.ToArray();
             RMQEnveloppe message = RMQEnveloppe.Deserialise(body);
-            //IMessageActions msgInstance = _msgFactory.GetMessageInstance(message);
-            //MsgReceived(msgInstance);
 
             MsgReceived(message);
         }

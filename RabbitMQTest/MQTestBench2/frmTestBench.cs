@@ -85,6 +85,15 @@ namespace MQTestBench2
                 dgvHistoryMsg.DataSource = null;
                 dgvHistoryMsg.DataSource = _historyItems;
             });
+
+            //sélectionner la dernière ligne
+            if (dgvHistoryMsg.Rows.Count > 0)
+            {
+                dgvHistoryMsg.ClearSelection();
+
+                dgvHistoryMsg.Rows[dgvHistoryMsg.Rows.Count - 1].Selected = true;
+                //dgvHistoryMsg.FirstDisplayedScrollingRowIndex = dgvHistoryMsg.Rows.Count - 1;
+            }
         }
 
         private async void btnEnvoyer_Click(object sender, EventArgs e)
@@ -169,6 +178,11 @@ namespace MQTestBench2
         private void dgvHistoryMsg_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             dgvHistoryMsg.Rows[e.RowIndex].DefaultCellStyle.BackColor = dgvHistoryMsg.Rows[e.RowIndex].Cells[1].Value.ToString() == "In" ? Color.LightGreen : Color.LightBlue;
+        }
+
+        private void dgvHistoryMsg_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

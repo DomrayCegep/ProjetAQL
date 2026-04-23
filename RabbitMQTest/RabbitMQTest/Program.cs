@@ -22,20 +22,13 @@
             distantQueueName = assignOrDefault("À qui vous voulez écrire?", distantQueueName);
 
 
-            RMQConnectionHelper mq;
+            MQConnection mq;
 
             // Connexion à RabbitMQ et configuration du consommateur
-            mq = new RMQConnectionHelper(@"amqp://" + adressServer, currentQueueName);
+            mq = new MQConnection(@"amqp://" + adressServer, currentQueueName);
+            mq.MessageReceived += LogReceivedMessage;
+
             await mq.Connect();
-
-            // Création d'un consommateur asynchrone pour recevoir les messages
-            var consumer = new AsyncEventingBasicConsumer(mq.CurrentChannel);
-
-            // Abonnement à l'événement de réception de message
-            consumer.ReceivedAsync += LogReceivedMessage;
-
-            // Démarrage de la consommation des messages
-            await mq.CurrentChannel.BasicConsumeAsync(currentQueueName, autoAck: true, consumer: consumer);
 
             Console.WriteLine($"Connextion effectuée avec succès sur la file [{currentQueueName}]. Vous pouvez écrire un message ou exit pour quitter");
 
@@ -47,7 +40,7 @@
                     line = Console.ReadLine();
                     if (line != "exit")
                         // Envoi du message à la file d'attente distante
-                        await mq.SendAsync(distantQueueName, "ChatMessage", line);
+                        await mq.SendMessage(distantQueueName, "ChatMessage", line, null);
                     else
                         break;
                 }
@@ -68,15 +61,10 @@
 
 
 
-        private static async Task LogReceivedMessage(object? model, BasicDeliverEventArgs ea)
+        private static void LogReceivedMessage(object? sender, RMQEnveloppe e)
         {
-            var body = ea.Body.ToArray();
-            RMQEnveloppe message = RMQEnveloppe.Deserialise(body);
-            var sender = message.Sender;
-
-            var messageid = ea.BasicProperties.MessageId;
-            var timestamp = ea.BasicProperties.Timestamp;
-
+            RMQEnveloppe message = e;
+       
             switch(message.MessageName)
             {
                 case "ChatMessage":
@@ -114,7 +102,7 @@
                     }
             }
 
-            Console.WriteLine($"{timestamp}:{messageid}:{sender}:{message.MessageText}");
+            Console.WriteLine($"{message.Sender}.{message.MessageName}:{message.MessageText}");
         }
 
 
