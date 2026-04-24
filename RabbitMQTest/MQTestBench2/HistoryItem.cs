@@ -28,7 +28,7 @@ namespace MQTestBench2
 
         public void Save(string archivePath)
         {
-            FilePath = Path.Combine(archivePath, $"[{MessageDate}][{Direction}][{DistantQueue}][{MessageName}].txt");
+            FilePath = Path.Combine(archivePath, $"[{MessageDate}][{Direction}][{DistantQueue}][{MessageName}].msg");
             if (!File.Exists(FilePath))
             {
                 System.IO.File.WriteAllBytes(FilePath, Content.Serialise());
@@ -50,7 +50,7 @@ namespace MQTestBench2
 
         public static List<HistoryItem> LoadAll(string archivePath)
         {
-            var files = Directory.GetFiles(archivePath, "*.txt");
+            var files = Directory.GetFiles(archivePath, "*.msg");
             List<HistoryItem> historyItems = new List<HistoryItem>();
             foreach (var file in files)
             {

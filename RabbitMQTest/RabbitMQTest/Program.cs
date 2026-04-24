@@ -1,7 +1,6 @@
 ﻿namespace RabbitMQTest
 {
-    using RabbitMQ.Client;
-    using RabbitMQ.Client.Events;
+
     using RMQHelperDLL;
     using System.Data;
 

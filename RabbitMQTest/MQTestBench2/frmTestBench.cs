@@ -16,6 +16,7 @@ namespace MQTestBench2
             InitializeComponent();
             InitializeHistoryFolder();
             LoadHistory();
+            ChangeConnectionState(false);
         }
 
         private void InitializeHistoryFolder()
@@ -132,12 +133,13 @@ namespace MQTestBench2
 
         private void btnOpenDlg_Click(object sender, EventArgs e)
         {
-            dlgOpenFile.ShowDialog();
-            if (!string.IsNullOrEmpty(dlgOpenFile.FileName))
+            
+            if (dlgOpenFile.ShowDialog() == DialogResult.OK)
             {
-                txtNomMessage.Text = dlgOpenFile.FileName;
+                HistoryItem item = HistoryItem.Load(dlgOpenFile.FileName);
 
-                txtSend.Text = File.ReadAllText(dlgOpenFile.FileName);
+                txtNomMessage.Text = item.Content.MessageName; 
+                txtSend.Text = item.Content.MessageText;
             }
         }
 

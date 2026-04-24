@@ -257,6 +257,7 @@
             // 
             // label4
             // 
+            label4.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             label4.AutoSize = true;
             label4.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label4.Location = new Point(431, 15);
@@ -397,7 +398,8 @@
             // 
             // dlgOpenFile
             // 
-            dlgOpenFile.FileName = "openFileDialog1";
+            dlgOpenFile.FileName = "*.msg";
+            dlgOpenFile.Filter = "Fichiers messages|*.msg";
             // 
             // frmTestBench
             // 
