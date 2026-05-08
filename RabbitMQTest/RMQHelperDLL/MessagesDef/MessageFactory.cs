@@ -1,37 +1,31 @@
-﻿using MQTestBench2.MQSystem.Messages;
-using RMQHelperDLL;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using RMQHelperDLL;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MQTestBench.MQSystem.Messages
+namespace RMQHelperDll.MessagesDef
 {
-    internal class MessageFactory
+    public sealed class MessageFactory
     {
-        List<IMessageActions> _messageInstances;
-        IMessageActions _defaultMessage;
+        List<MessageBase> _messageInstances;
+        MessageBase _defaultMessage;
 
         public MessageFactory()
         {
-            var interfaceType = typeof(IMessageActions);
+            var interfaceType = typeof(MessageBase);
 
             // 1. Obtenir tous les types dans l'assemblée actuelle
-            var types = Assembly.GetExecutingAssembly().GetTypes();
+            var types = Assembly.GetCallingAssembly().GetTypes();
 
             // 2. Filtrer avec LINQ
             var implementations = types.Where(t => interfaceType.IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract).ToList();
 
-            _messageInstances = new List<IMessageActions>();
+            _messageInstances = new List<MessageBase>();
             _defaultMessage = new MsgUnknown(); // Par exemple, une instance par défaut
 
             foreach (var impl in implementations)
             {
                 try
                 {
-                    IMessageActions instance = (IMessageActions)Activator.CreateInstance(impl);
+                    MessageBase instance = (MessageBase)Activator.CreateInstance(impl);
                     if (instance != null)
                         _messageInstances.Add(instance);
                 }
@@ -39,7 +33,7 @@ namespace MQTestBench.MQSystem.Messages
             }
         }
 
-        public IMessageActions GetMessageInstance(RMQEnveloppe msgEnveloppe)
+        public MessageBase GetMessageInstance(RMQEnveloppe msgEnveloppe)
         {
             var msg = _messageInstances.FirstOrDefault(m => m.MessageName == msgEnveloppe.MessageName);
             if (msg == null)
